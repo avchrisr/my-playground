@@ -1,0 +1,21 @@
+{
+  "name": "my-playground",
+  "version": "1.0.0",
+  "description": "my playground",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avchrisr/my-playground.git"
+  },
+  "author": "chrisr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/avchrisr/my-playground/issues"
+  },
+  "homepage": "https://github.com/avchrisr/my-playground#readme"
+}
