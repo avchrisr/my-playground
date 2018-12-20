@@ -12,6 +12,9 @@ Output: 7 -> 0 -> 8
 Explanation: 342 + 465 = 807.
 */
 
+// RESULT
+// Runtime: 112 ms, faster than 99.53% of JavaScript online submissions for Add Two Numbers.
+
 /**
  * Definition for singly-linked list.
  * function ListNode(val) {
@@ -36,38 +39,45 @@ class ListNode {
 }
 
 const addTwoNumbers = (l1: ListNode, l2: ListNode) => {
-
-    let num1 = '';
-    let num2 = '';
-
     let i = l1;
-    while (i !== null) {
-        num1 = i.val + num1;
-        i = i.next;
-    }
+    let j = l2;
+    let carryOver: number = 0;
 
-    i = l2;
-    while (i !== null) {
-        num2 = i.val + num2;
-        i = i.next;
-    }
-
-    const sum = (parseInt(num1) + parseInt(num2)).toString();
-
-    let newListNode: ListNode;
+    let newNode: ListNode;
+    let headNode: ListNode;
     let nextNode: ListNode;
-    for (let i=0; i < sum.length; i++) {
-        if (i === 0) {
-            newListNode = new ListNode(parseInt(sum[i]), null);
-        } else {
-            nextNode = new ListNode(parseInt(sum[i]), newListNode);
-            newListNode = nextNode;
+    while (i !== null || j !== null || carryOver > 0) {
+        let num1 = i ? i.val : 0;
+        let num2 = j ? j.val : 0;
+
+        const sum = num1 + num2 + carryOver;
+        carryOver = (sum >= 10) ? 1 : 0;
+
+        newNode = new ListNode(sum >= 10 ? sum - 10 : sum, null);
+
+        if (!headNode) {
+            headNode = newNode;
         }
+        if (nextNode) {
+            nextNode.next = newNode;
+        }
+        nextNode = newNode;
+
+        i = i ? i.next : null;
+        j = j ? j.next : null;
     }
-    return newListNode;
+
+    return headNode;
 };
 
 const l1 = new ListNode(2, new ListNode(4, new ListNode(3, null)));
+
+const l3 = new ListNode(1, new ListNode(0, new ListNode(0, 
+    new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, 
+        new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, 
+            new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, 
+                new ListNode(0, new ListNode(1, null)))))))))))))))));
+
 const l2 = new ListNode(5, new ListNode(6, new ListNode(4, null)));
 
-console.log(addTwoNumbers(l1, l2));
+console.log(addTwoNumbers(l3, l2));
