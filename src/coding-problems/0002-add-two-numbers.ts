@@ -15,6 +15,9 @@ Explanation: 342 + 465 = 807.
 // RESULT
 // Runtime: 112 ms, faster than 99.53% of JavaScript online submissions for Add Two Numbers.
 
+// Time complexity: O(max(m,n))
+// Space complexity: O(max(m,n)) + 1
+
 /**
  * Definition for singly-linked list.
  * function ListNode(val) {
