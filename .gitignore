@@ -62,3 +62,6 @@ typings/
 
 # typescript built js files
 build
+
+# my test ts files
+test*.ts
