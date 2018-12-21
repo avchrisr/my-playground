@@ -99,3 +99,5 @@ const lengthOfLongestSubstring = (s: string) => {
 const input: string = 'dvdf';
 
 console.log(lengthOfLongestSubstring(input));
+
+export {};
