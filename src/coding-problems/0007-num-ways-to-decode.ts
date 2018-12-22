@@ -40,55 +40,32 @@ mapping.set(24, 'x');
 mapping.set(25, 'y');
 mapping.set(26, 'z');
 
-// console.log(mapping);
-
 const numDecodedMessages = [];
 
 const decodeMessage = (encodedMessage: string, decodedMsg: string = '') => {
     if (encodedMessage.length > 0) {
         const singleDigit: number = parseInt(encodedMessage[0]);
-
-        console.log(`singleDigit = ${singleDigit}`);
-
-        if (singleDigit > 0) {
-            // decodedMsg += mapping.get(singleDigit);
-            console.log(`decodedMsg SINGLE = ${decodedMsg}`);
-
-        } else {
-            console.log(`decodedMsg SINGLE FINAL = ${decodedMsg}`);
+        if (singleDigit < 1 && decodedMsg.length > 0) {
             numDecodedMessages.push(decodedMsg);
-            // decodedMsg = `${singleDigit}`;
             decodedMsg = mapping.get(singleDigit);
         }
-
         decodeMessage(encodedMessage.substring(1), decodedMsg + mapping.get(singleDigit));
-
     } else {
-        console.log(`decodedMsg SINGLE FINAL 2 = ${decodedMsg}`);
         numDecodedMessages.push(decodedMsg);
     }
     
     if (encodedMessage.length > 1) {
-        const doubleDigit: number = parseInt(encodedMessage.substring(0, 2));
-   
-        console.log(`doubleDigit = ${doubleDigit}`);
-   
+        const doubleDigit: number = parseInt(encodedMessage.substring(0, 2));  
         if (doubleDigit >= 10 && doubleDigit <= 26) {
-            // decodedMsg += mapping.get(doubleDigit);
-            console.log(`counter DOUBLE = ${decodedMsg}`);
-
+            decodeMessage(encodedMessage.substring(2), decodedMsg + mapping.get(doubleDigit));
         } else {
-            console.log(`counter DOUBLE FINAL = ${decodedMsg}`);
-            numDecodedMessages.push(decodedMsg);
-            // decodedMsg = `${doubleDigit}`;
-            decodedMsg = mapping.get(doubleDigit);
+            decodeMessage(encodedMessage.substring(1), decodedMsg + mapping.get(parseInt(encodedMessage[0])));
         }
-
-        decodeMessage(encodedMessage.substring(2), decodedMsg + mapping.get(doubleDigit));
     }
 };
 
 const input: string = `11125234`;
+// const input: string = `111`;
 
 decodeMessage(input);
 
