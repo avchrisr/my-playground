@@ -39,12 +39,14 @@ Tree is balanced = true
 --------  InOrder  (left to right. always in order)  ---------
 1 2 4 5 6 8 9
 
---------  PreOrder (depth-first traversal, starting with the root)  ---------
+--------  PreOrder (root/parent nodes first before the leaf nodes)  ---------
 6 4 2 1 5 8 9
 
---------  PostOrder (start at deepest left depth first. left tree first then right tree, ending at root) sort of like reverse-breadth-first  ---------
+--------  PostOrder (leaf nodes first before the root/parent nodes from LEFT tree first, then RIGHT tree)  ---------
 1 2 5 4 9 8 6
 
+--------  LevelOrder (Breadth-First)  ----------
+6 4 8 2 5 9 1
 */
 
 class Node {
@@ -204,15 +206,18 @@ class BinarySearchTree {
     // ----------   TREE TRAVERSALS   -------------
 
     // --------  InOrder  (left to right. always in order)  ---------
-    printInOrder(): void {
-        this.inOrderTraversal(this.root);
-    }
+    printInOrder(): any[] {
+        const output = [];
+        inOrderTraversal(this.root);
+        return output;
 
-    private inOrderTraversal(currentNode: Node): void {
-        if (currentNode !== null) {
-            this.inOrderTraversal(currentNode.left);
-            console.log(currentNode.data);                  // IN (BETWEEN)
-            this.inOrderTraversal(currentNode.right);
+        function inOrderTraversal(currentNode: Node): void {
+            if (currentNode !== null) {
+                inOrderTraversal(currentNode.left);
+                // console.log(currentNode.data);                  // IN (BETWEEN)
+                output.push(currentNode.data);
+                inOrderTraversal(currentNode.right);
+            }
         }
     }
 
@@ -224,30 +229,59 @@ class BinarySearchTree {
         }
     }
 
-    // --------  PreOrder (depth-first traversal, starting with the root)  ---------
-    printPreOrder(): void {
-        this.preOrderTraversal(this.root);
-    }
+    // --------  PreOrder (root/parent nodes first before the leaf nodes)  ---------
+    printPreOrder(): any[] {
+        const output = [];
+        preOrderTraversal(this.root);
+        return output;
 
-    private preOrderTraversal(currentNode: Node): void {
-        if (currentNode !== null) {
-            console.log(currentNode.data);                  // PRE
-            this.preOrderTraversal(currentNode.left);
-            this.preOrderTraversal(currentNode.right);
+        function preOrderTraversal(currentNode: Node): void {
+            if (currentNode !== null) {
+                // console.log(currentNode.data);                  // PRE
+                output.push(currentNode.data);
+                preOrderTraversal(currentNode.left);
+                preOrderTraversal(currentNode.right);
+            }
         }
     }
 
-    //--------  PostOrder (start at deepest left depth first. left tree first then right tree, ending at root) sort of like reverse-breadth-first  ---------
-    printPostOrder(): void {
-        this.postOrderTraversal(this.root);
+    // --------  PostOrder (leaf nodes first before the root/parent nodes from LEFT tree first, then RIGHT tree)  ---------
+    printPostOrder(): any[] {
+        const output = [];
+        postOrderTraversal(this.root);
+        return output;
+
+        function postOrderTraversal(currentNode: Node): void {
+            if (currentNode !== null) {
+                postOrderTraversal(currentNode.left);
+                postOrderTraversal(currentNode.right);
+                // console.log(currentNode.data);                  // POST
+                output.push(currentNode.data);
+            }
+        }
     }
 
-    private postOrderTraversal(currentNode: Node): void {
-        if (currentNode !== null) {
-            this.postOrderTraversal(currentNode.left);
-            this.postOrderTraversal(currentNode.right);
-            console.log(currentNode.data);                  // POST
+    // --------  LevelOrder (Breadth-First)  ---------
+    printLevelOrder(): any[] {
+        const output = [];
+        const q = [];
+
+        if (this.root === null) {
+            return output;
         }
+
+        q.push(this.root);
+        while (q.length > 0) {
+            const currentNode = q.shift();
+            output.push(currentNode.data);
+            if (currentNode.left) {
+                q.push(currentNode.left);
+            }
+            if (currentNode.right) {
+                q.push(currentNode.right);
+            }
+        }
+        return output;
     }
 
     getMaxValue(): any {
@@ -313,13 +347,16 @@ console.log(`Min value in the BST = ${bst.getMinValue()}`);
 
 console.log(`Tree is balanced = ${bst.isBalanced()}`);
 
-console.log('--------  InOrder  ---------');
-bst.printInOrder();
+console.log('\n--------  InOrder  ---------');
+console.log(bst.printInOrder());
 
-console.log('--------  PreOrder  ---------');
-bst.printPreOrder();
+console.log('\n--------  PreOrder  ---------');
+console.log(bst.printPreOrder());
 
-console.log('--------  PostOrder  ---------');
-bst.printPostOrder();
+console.log('\n--------  PostOrder  ---------');
+console.log(bst.printPostOrder());
+
+console.log('\n--------  LevelOrder (Breadth-First)  ---------');
+console.log(bst.printLevelOrder());
 
 export {};
