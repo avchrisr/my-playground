@@ -20,7 +20,7 @@ You should be as efficient with time and space as possible.
 //                      add(id) - O(1)   time & space
 
 // binary search tree.  get(i) - O(log n) time, but in this case, it's in a sequential order, unbalanced to the right. O(n)
-//                      add(id) - O(log n)  time, but in this case we're already adding to tht end. so O(n).  O(1) space
+//                      add(id) - O(log n)  time, but in this case we're always adding to the end. so O(n).  O(1) space
 
 
 // Choice: Hashmap
