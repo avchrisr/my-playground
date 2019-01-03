@@ -1,78 +1,42 @@
-// Binary Search Tree (BST) implementation
-
-// balance tree (when it's unbalanced)
-// - when to trigger?  when the difference of depth between left and right sides is greater than 5 (arbitrarily)?
-
-// it's always in sorted order
-// can or cannot have duplicate keys? if duplicate, what to do?  put it in Left
-
-// - fast search = O(log n)
-// - fast insert = O(log n)
-// - fast delete = O(log n)
-
-// ref) https://www.geeksforgeeks.org/implementation-binary-search-tree-javascript/
-// re-implement this based on that reference tutorial!
-
 /*
+WHEN BALANCED:
+// fast search = O(log n)
+// fast insert = O(log n)
+// fast delete = O(log n)
 
-INSERTED value = 6
-INSERTED value = 4
-INSERTED value = 5
-INSERTED value = 8
-INSERTED value = 9
-INSERTED value = 2
-INSERTED value = 1
+WHEN NOT BALANCED: O(n)
 
-      6
-	 / \
-    4   8
-   / \   \
-  2   5   9
- /  
-1
+----------------
+TREE TRAVERSALS
+----------------
+DEPTH-FIRST SEARCH (DFS)
+- IN-ORDER
+- PRE-ORDER
+- POST-ORDER
 
-Max value in the BST = 9
-Min value in the BST = 1
+BREADTH-FIRST SEARCH (BFS)
 
-Tree is balanced = true
-
---------  InOrder  (left to right. always in order)  ---------
-1 2 4 5 6 8 9
-
---------  PreOrder (root/parent nodes first before the leaf nodes)  ---------
-6 4 2 1 5 8 9
-
---------  PostOrder (leaf nodes first before the root/parent nodes from LEFT tree first, then RIGHT tree)  ---------
-1 2 5 4 9 8 6
-
---------  LevelOrder (Breadth-First)  ----------
-6 4 8 2 5 9 1
 */
 
 class Node {
     data: any;
-    left: Node;
-    right: Node;
+    left: Node = null;
+    right: Node = null;
 
     constructor(data: any) {
         this.data = data;
-        this.left = null;
-        this.right = null;
     }
 }
 
 class BinarySearchTree {
-    root: Node;
+    root: Node = null;
+    constructor() {}
 
-    constructor() {
-        this.root = null;
-    }
-
-    getRootNode(): Node {
+    getRoot(): Node {
         return this.root;
     }
 
-    insert(data: any): void {
+    insertRecursively(data: any): void {
         const newNode = new Node(data);
         if (this.root === null) {
             this.root = newNode;
@@ -100,31 +64,35 @@ class BinarySearchTree {
         }
     }
 
-    insertNodeIteratively(data: any): void {
-        let newNode = new Node(data);
-        let currentNode = this.root;
-        let prevNode: Node = null;
-        while (currentNode !== null) {
-            prevNode = currentNode;
-            if (newNode.data > currentNode.data) {
-                currentNode = currentNode.right;
-            } else {
-                currentNode = currentNode.left;    
-            }
-        }
-
-        if (prevNode === null) {
+    insert(data: any): void {
+        const newNode = new Node(data);
+        if (this.root === null) {
             this.root = newNode;
         } else {
-            if (newNode.data > prevNode.data) {
-                prevNode.right = newNode;
-            } else {
-                prevNode.left = newNode;
+            let currentNode = this.root;
+            let nodeAdded = false;
+            while (nodeAdded === false) {
+                if (data <= currentNode.data) {
+                    if (currentNode.left === null) {
+                        currentNode.left = newNode;
+                        nodeAdded = true;
+                    } else {
+                        currentNode = currentNode.left;
+                    }
+                } else {
+                    if (currentNode.right === null) {
+                        currentNode.right = newNode;
+                        nodeAdded = true;
+                    } else {
+                        currentNode = currentNode.right;
+                    }
+                }
             }
         }
     }
 
-    remove(data: any): void {
+
+    removeRecursively(data: any): void {
         // root is re-set with the re-organized tree after removal
         this.root = this.removeNode(this.root, data);
     }
@@ -142,15 +110,14 @@ class BinarySearchTree {
             // go left
             currentNode.left = this.removeNode(currentNode.left, data);
         } else {
-            // found a node with the same data value
             console.log(`${data} Found. removing...`);
 
-            // when the tree allows multiple nodes with the same data, then remove the first one found
-
-            // if left exists and right does not, set the currentNode = currentNode.left
-            // if left does not exist, and right does, set the currentNode = currentNode.right
-            // if both exist, set the next min data (right most node of the left side OR left most node of the right side)
-            //     and then remove that next min node from the currentNode subtree 
+            // if currentNode is a leaf node (no children), then set currentNode to null
+            // if currentNode.right exists and currentNode.left does not, set currentNode to currentNode.right
+            // if currentNode.left exists and currentNode.right does not, set currentNode to currentNode.left
+            // if both left and right children exist, then find the right-most node of the currentNode.left
+            //   set currentNode.data to that right-most node's data
+            //   then remove that right-most node.
 
             if (currentNode.left === null && currentNode.right === null) {
                 currentNode = null;
@@ -181,110 +148,116 @@ class BinarySearchTree {
         return currentNode;
     }
 
-    contains(data: any): boolean {
-        return this.containsNode(this.root, data);
-    }
-
-    private containsNode(currentNode: Node, data: any): boolean {
-        if (currentNode === null) {
+    remove(data: any): boolean {
+        if (this.root === null) {
             return false;
         }
 
-        if (data === currentNode.data) {
-            return true;
-        }
+        let currentNode = this.root;
+        let parentNode: Node = null;
+        while (currentNode !== null) {
+            if (data === currentNode.data) {
+                // if currentNode is a leaf node (no children), then set currentNode to null
+                // if currentNode.right exists and currentNode.left does not, set currentNode to currentNode.right
+                // if currentNode.left exists and currentNode.right does not, set currentNode to currentNode.left
+                // if both left and right children exist, then find the right-most node of the currentNode.left
+                //   set currentNode.data to that right-most node's data
+                //   then remove that right-most node.
 
-        if (data > currentNode.data) {
-            // go right
-            return this.containsNode(currentNode.right, data);
-        } else {
-            // go left
-            return this.containsNode(currentNode.left, data);
-        }
-    }
+                if (currentNode.left === null && currentNode.right === null) {
+                    if (parentNode === null) {
+                        this.root = null;
+                    } else {
+                        if (parentNode.left && parentNode.left.data === currentNode.data) {
+                            parentNode.left = null;
+                        } else {
+                            parentNode.right = null;
+                        }
+                    }
+                    return true;
+                }
 
-    // ----------   TREE TRAVERSALS   -------------
+                if (currentNode.left === null) {
+                    if (parentNode === null) {
+                        this.root = currentNode.right;
+                    } else {
+                        if (parentNode.left && parentNode.left.data === currentNode.data) {
+                            parentNode.left = currentNode.right;
+                        } else {
+                            parentNode.right = currentNode.right;
+                        }
+                    }
+                    return true;
+                }
 
-    // --------  InOrder  (left to right. always in order)  ---------
-    printInOrder(): any[] {
-        const output = [];
-        inOrderTraversal(this.root);
-        return output;
+                if (currentNode.right === null) {
+                    if (parentNode === null) {
+                        this.root = currentNode.left;
+                    } else {
+                        if (parentNode.left && parentNode.left.data === currentNode.data) {
+                            parentNode.left = currentNode.left;
+                        } else {
+                            parentNode.right = currentNode.left;
+                        }
+                    }
+                    return true;
+                }
 
-        function inOrderTraversal(currentNode: Node): void {
-            if (currentNode !== null) {
-                inOrderTraversal(currentNode.left);
-                // console.log(currentNode.data);                  // IN (BETWEEN)
-                output.push(currentNode.data);
-                inOrderTraversal(currentNode.right);
+                let replacer = currentNode.left;
+                let replacerParentNode = null;
+                while (replacer.right !== null) {
+                    replacerParentNode = replacer;
+                    replacer = replacer.right;
+                }
+
+                console.log(`####   replacer.data = ${replacer.data}`);
+
+                currentNode.data = replacer.data;
+                if (replacerParentNode === null) {
+                    currentNode.left = null;
+                } else {
+                    replacerParentNode.right = null;
+                }
+
+                return true;
+            }
+
+            parentNode = currentNode;
+            if (data < currentNode.data) {
+                currentNode = currentNode.left;
+            } else {
+                currentNode = currentNode.right;
             }
         }
+        return false;
     }
 
-    private inOrderTraverse(currentNode: Node, arr: any[]): void {
-        if (currentNode !== null) {
-            this.inOrderTraverse(currentNode.left, arr);
-            arr.push(currentNode.data);
-            this.inOrderTraverse(currentNode.right, arr);
-        }
-    }
-
-    // --------  PreOrder (root/parent nodes first before the leaf nodes)  ---------
-    printPreOrder(): any[] {
-        const output = [];
-        preOrderTraversal(this.root);
-        return output;
-
-        function preOrderTraversal(currentNode: Node): void {
-            if (currentNode !== null) {
-                // console.log(currentNode.data);                  // PRE
-                output.push(currentNode.data);
-                preOrderTraversal(currentNode.left);
-                preOrderTraversal(currentNode.right);
-            }
-        }
-    }
-
-    // --------  PostOrder (leaf nodes first before the root/parent nodes from LEFT tree first, then RIGHT tree)  ---------
-    printPostOrder(): any[] {
-        const output = [];
-        postOrderTraversal(this.root);
-        return output;
-
-        function postOrderTraversal(currentNode: Node): void {
-            if (currentNode !== null) {
-                postOrderTraversal(currentNode.left);
-                postOrderTraversal(currentNode.right);
-                // console.log(currentNode.data);                  // POST
-                output.push(currentNode.data);
-            }
-        }
-    }
-
-    // --------  LevelOrder (Breadth-First)  ---------
-    printLevelOrder(): any[] {
-        const output = [];
-        const q = [];
-
+    // search / find
+    contains(data: any): boolean {
         if (this.root === null) {
-            return output;
+            return false;
         }
 
-        q.push(this.root);
-        while (q.length > 0) {
-            const currentNode = q.shift();
-            output.push(currentNode.data);
-            if (currentNode.left) {
-                q.push(currentNode.left);
+        let currentNode = this.root;
+        while (currentNode !== null) {
+            if (data === currentNode.data) {
+                return true;
             }
-            if (currentNode.right) {
-                q.push(currentNode.right);
+            if (data < currentNode.data) {
+                currentNode = currentNode.left;
+            } else {
+                currentNode = currentNode.right;
             }
         }
-        return output;
+        return false;
     }
 
-    getMaxValue(): any {
+    // the right-most node
+    getMax(): any {
+        if (this.root === null) {
+            return null;
+        }
+
         let currentNode = this.root;
         while (currentNode.right !== null) {
             currentNode = currentNode.right;
@@ -292,7 +265,12 @@ class BinarySearchTree {
         return currentNode.data;
     }
 
-    getMinValue(): any {
+    // the left-most node
+    getMin(): any {
+        if (this.root === null) {
+            return null;
+        }
+
         let currentNode = this.root;
         while (currentNode.left !== null) {
             currentNode = currentNode.left;
@@ -300,63 +278,103 @@ class BinarySearchTree {
         return currentNode.data;
     }
 
-    isBalanced(currentNode: Node = this.root, level: number = 1): boolean {
-        if (currentNode === null) {
-            return true;
+    // -----------  BFS  --------------
+    breadthFirstTraversal(): any[] {
+        const queue = [];
+        const visited = [];
+        let node = this.root;
+        queue.push(node);
+
+        while (queue.length > 0) {
+            node = queue.shift();       // FIFO
+           
+            if (node.left) {
+                queue.push(node.left);
+            }
+            if (node.right) {
+                queue.push(node.right);
+            }
+
+            visited.push(node.data);
         }
-
-        const leftHeight: number = this.checkHeight(currentNode.left);
-        const rightHeight: number = this.checkHeight(currentNode.right);
-
-        console.log(`level [${level}] - leftHeight = ${leftHeight} | rightHeight = ${rightHeight}`);
-
-        if ((Math.abs(leftHeight - rightHeight) <= 1) && this.isBalanced(currentNode.left, level + 1) && this.isBalanced(currentNode.right, level + 1)) {
-            return true;
-        }
-
-        return false;
+        return visited;
     }
 
-    checkHeight(currentNode: Node): number {
-        if (currentNode === null) {
-            return 0;
-        }
-
-        return 1 + Math.max(this.checkHeight(currentNode.left), this.checkHeight(currentNode.right));
+    // ---------  DFS  -----------
+    inOrderTraversal(): any[] {
+        const visited = [];
+        this.inOrder(this.root, visited);
+        return visited;
     }
 
-    // rebalanceTree()      --  too complex to be on interview questions.  AVL tree.  O(n log n)
+    private inOrder(currentNode: Node, visited: any[]): void {
+        if (currentNode !== null) {
+            this.inOrder(currentNode.left, visited);
+            visited.push(currentNode.data);
+            this.inOrder(currentNode.right, visited);
+        }
+    }
+
+    preOrderTraversal(): any[] {
+        const visited = [];
+        this.preOrder(this.root, visited);
+        return visited;
+    }
+
+    private preOrder(currentNode: Node, visited: any[]): void {
+        if (currentNode !== null) {
+            visited.push(currentNode.data);
+            this.preOrder(currentNode.left, visited);
+            this.preOrder(currentNode.right, visited);
+        }
+    }
+
+    postOrderTraversal(): any[] {
+        const visited = [];
+        this.postOrder(this.root, visited);
+        return visited;
+    }
+
+    private postOrder(currentNode: Node, visited: any[]): void {
+        if (currentNode !== null) {
+            this.postOrder(currentNode.left, visited);
+            this.postOrder(currentNode.right, visited);
+            visited.push(currentNode.data);
+        }
+    }
+
 }
 
 const bst = new BinarySearchTree();
+// bst.insert(10);
+// bst.insert(4);
+// bst.insert(18);
 
-for (let i=0; i < 7; i++) {
-    const value: number = Math.ceil(Math.random() * 10);
-    // bst.insert(value);
-    bst.insertNodeIteratively(value);
+for (let i=0; i < 17; i++) {
+    const value: number = Math.ceil(Math.random() * 20);
+    bst.insert(value);
     console.log(`INSERTED value = ${value}`);
 }
 
-bst.remove(Math.ceil(Math.random() * 10));
+const value = Math.ceil(Math.random() * 10);
+console.log(`value '${value}' found = ${bst.contains(value)}`);
+console.log(`getMax() = ${bst.getMax()}`);
+console.log(`getMin() = ${bst.getMin()}`);
+console.log(`removing '${value}'... = ${bst.remove(value)}`);
 
-const searchValue = Math.ceil(Math.random() * 10);
-console.log(`this BST contains ${searchValue} = ${bst.contains(searchValue)}`);
+console.log('\n-----------   Breadth-First Traversal   -----------');
+console.log(bst.breadthFirstTraversal());
 
-console.log(`Max value in the BST = ${bst.getMaxValue()}`);
-console.log(`Min value in the BST = ${bst.getMinValue()}`);
+console.log('\n-----------   In-Order Traversal   -----------');
+console.log(bst.inOrderTraversal());
 
-console.log(`Tree is balanced = ${bst.isBalanced()}`);
+console.log('\n-----------   Pre-Order Traversal   -----------');
+console.log(bst.preOrderTraversal());
 
-console.log('\n--------  InOrder  ---------');
-console.log(bst.printInOrder());
+console.log('\n-----------   Post-Order Traversal   -----------');
+console.log(bst.postOrderTraversal());
 
-console.log('\n--------  PreOrder  ---------');
-console.log(bst.printPreOrder());
+// console.log(JSON.stringify(bst, null, 4));
 
-console.log('\n--------  PostOrder  ---------');
-console.log(bst.printPostOrder());
-
-console.log('\n--------  LevelOrder (Breadth-First)  ---------');
-console.log(bst.printLevelOrder());
 
 export {};
