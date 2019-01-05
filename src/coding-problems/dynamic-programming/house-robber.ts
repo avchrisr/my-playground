@@ -36,11 +36,11 @@ const rob = (nums: number[], i = nums.length - 1, memo = {}): number => {
         return 0;
     }
 
-    // WITH DYNAMIC PROGRAMMING
-    if (!memo[i-2]) {
+    // be careful not to use "if (!memo[i-2]))" as the value 0 evaluates to false in JavaScript!
+    if (!(`${i-2}` in memo)) {
         memo[i-2] = rob(nums, i-2, memo);
     }
-    if (!memo[i-1]) {
+    if (!(`${i-1}` in memo)) {
         memo[i-1] = rob(nums, i-1, memo);
     }
     return Math.max(memo[i-2] + nums[i], memo[i-1]);
@@ -50,7 +50,8 @@ const rob = (nums: number[], i = nums.length - 1, memo = {}): number => {
 };
 
 console.time('BENCH1');
-const input = [2,7,9,3,1,5,2,6,3,4,2,3,4,1,6,2,3,1,7,2,3,4,5,1,2,3];
+// const input = [2,7,9,3,1,5,2,6,3,4,2,3,4,1,6,2,3,1,7,2,3,4,5,1,2,3];
+const input = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 console.log(rob(input));
 console.timeEnd('BENCH1');
 
