@@ -37,10 +37,10 @@ const rob = (nums: number[], i = nums.length - 1, memo = {}): number => {
     }
 
     // be careful not to use "if (!memo[i-2]))" as the value 0 evaluates to false in JavaScript!
-    if (!(`${i-2}` in memo)) {
+    if (!((i-2) in memo)) {
         memo[i-2] = rob(nums, i-2, memo);
     }
-    if (!(`${i-1}` in memo)) {
+    if (!((i-1) in memo)) {
         memo[i-1] = rob(nums, i-1, memo);
     }
     return Math.max(memo[i-2] + nums[i], memo[i-1]);
