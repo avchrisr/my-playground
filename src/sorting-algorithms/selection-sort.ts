@@ -2,7 +2,7 @@
 
 const selectionSort = (input: number[]): number[] => {
     for (let i=0; i < input.length - 1; i++) {
-        let lowest = i;
+        let lowest = i;                         // assume the item at i is the lowest to start with
 
         for (let j = i+1; j < input.length; j++) {
             if (input[j] < input[lowest]) {
