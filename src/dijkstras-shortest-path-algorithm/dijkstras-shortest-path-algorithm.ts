@@ -6,8 +6,8 @@ DIJKSTRA'S SHORTEST PATH ALGORITHM
 - Priority Queue with shortest distance vertex on top
   - min-heap -- O(log n)
 
-- distanceTable
-- previousTable
+- distanceTable      Init: 0 (start)   Infinity (all other vertices)
+- previousTable      Init: null (for all vertices)
 
 */
 
@@ -77,10 +77,10 @@ const dijkstra = (start: string, finish: string): any => {
 	for (let vertex in graph_adjacencyList) {
 		if (vertex === start) {
 			distances[vertex] = 0;
-			pq.enqueue({vertex, priority: 0});
+			pq.enqueue({vertex, priority: 1});
 		} else {
 			distances[vertex] = Infinity;
-			pq.enqueue({vertex, priority: Infinity});
+			// pq.enqueue({vertex, priority: Infinity});    // no need to do this. Just add the starting vertex to the Priority Queue
 		}
 		previous[vertex] = null;
 	}
@@ -111,7 +111,8 @@ const dijkstra = (start: string, finish: string): any => {
 		if (distances[lowestCostVertex] !== Infinity) {
 			for (let neighbor in graph_adjacencyList[lowestCostVertex]) {
 				// calculate new distance to the neighboring vertex
-				const candidate = distances[lowestCostVertex] + graph_adjacencyList[lowestCostVertex][neighbor];
+                const candidate = distances[lowestCostVertex] + graph_adjacencyList[lowestCostVertex][neighbor];
+                
 				if (candidate < distances[neighbor]) {
 					// updating new shortest distance to neighbor
 					distances[neighbor] = candidate;
@@ -124,7 +125,9 @@ const dijkstra = (start: string, finish: string): any => {
 				}
 			}
 		}
-	}
+    }
+
+    return `Path from ${start} to ${finish} Not Found.`;
 }
 
 
