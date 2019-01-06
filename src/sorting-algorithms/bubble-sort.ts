@@ -5,7 +5,7 @@ const bubbleSort = (input: number[]): number[] => {
         let swapped = false;
         
         for (let j=0; j < i - 1; j++) {
-            if (input[j] > input[j+1]) {
+            if (input[j+1] < input[j]) {
                 // swap
                 const temp = input[j];
                 input[j] = input[j+1];
