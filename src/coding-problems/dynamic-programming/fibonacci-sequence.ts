@@ -2,14 +2,43 @@
 // 1 1 2 3 5 8 13 21 34 55 ...
 
 /*
-fibonacci(45);  //  1134903170
-fibonacci function calls = 2269806339
-NORMAL RECURSIVE: 16243.314ms
+fibonacci_iterative(45);    //  1134903170
+ITERATIVE:                      3.092ms
 
-fiboDP(45);     //  1134903170
-fiboDP function calls = 45
-DYNAMIC PROGRAMMING: 0.160ms
+fibonacci(45);              //  1134903170
+fibonacci function calls =      2269806339
+NORMAL RECURSIVE:               16243.314ms
+
+fiboDP(45);                 //  1134903170
+fiboDP function calls =         45
+DYNAMIC PROGRAMMING:            0.160ms
 */
+
+// Iterative solution  --  O(n) time | O(1) space
+// Not as fast as Dynamic Programming recursive solution, but still much faster than the normal recursive solution.
+const fibonacci_iterative = (sequence: number): number => {
+    // 1 1 2 3 5 8 13 21 34 55 ...
+    if (sequence < 3) {
+        return 1;
+    }
+
+    let currNum: number;
+    let prev1 = 1;
+    let prev2 = 1;
+
+    for (let i=3; i <= sequence; i++) {
+        currNum = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = currNum;
+    }
+
+    return currNum;
+};
+
+console.time('ITERATIVE');
+console.log(fibonacci_iterative(45));
+console.timeEnd('ITERATIVE');
+
 
 let fibonacciFunctionCalls = 0;
 let fiboDPcalls = 0;
