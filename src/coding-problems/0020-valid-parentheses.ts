@@ -59,26 +59,22 @@ const isValid = (s: string): boolean => {
         if (s[i] === '[' || s[i] === '(' || s[i] === '{') {
             stack.push(s[i]);
         } else {
+            const lastOpenParenthesis = stack.pop();
+
             switch (s[i]) {
                 case ']':
-                    if (stack[stack.length-1] !== '[') {
+                    if (lastOpenParenthesis !== '[') {
                         return false;
-                    } else {
-                        stack.pop();
                     }
                     break;
                 case ')':
-                    if (stack[stack.length-1] !== '(') {
+                    if (lastOpenParenthesis !== '(') {
                         return false;
-                    } else {
-                        stack.pop();
                     }
                     break;
                 case '}':
-                    if (stack[stack.length-1] !== '{') {
+                    if (lastOpenParenthesis !== '{') {
                         return false;
-                    } else {
-                        stack.pop();
                     }
                     break;
                 default:
