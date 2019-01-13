@@ -147,8 +147,8 @@ bluebirdPromise.try(async () => {
     
     const messages: Message[] = [];
 
-    messages.push(MessageSender.createMessage(null, 'patient-1-1.hl7', 'LAB5', 'HL7'));
-    messages.push(MessageSender.createMessage(null, 'patient-1-2.hl7', 'LAB6', 'HL7'));
+    messages.push(MessageSender.createMessage(null, 'test-patient-1-1.hl7', 'LAB5', 'HL7'));
+    messages.push(MessageSender.createMessage(null, 'test-patient-1-2.hl7', 'LAB6', 'HL7'));
 
     const data: any = await messageSender.send(messages, adminUser);
 
