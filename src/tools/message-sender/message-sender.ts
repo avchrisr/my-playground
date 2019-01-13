@@ -1,6 +1,7 @@
 
-// TODO: convert promises to async / await
-
+// TODO: 
+// - convert promises to async / await
+// - insert data sources
 
 const _ = require('lodash');
 const bluebirdPromise = require('bluebird');
