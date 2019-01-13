@@ -1,10 +1,13 @@
 {
-    "compilerOptions": {
-        "outDir": "./build",
-        "allowJs": false,
-        "target": "es6"
-    },
-    "include": [
-        "./src/**/*"
+  "compilerOptions": {
+    "outDir": "./build",
+    "allowJs": false,
+    "target": "es6",
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+      "./src/**/*"
     ]
 }

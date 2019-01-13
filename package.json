@@ -3,8 +3,15 @@
   "version": "1.0.0",
   "description": "my playground",
   "main": "app.js",
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "lodash": "^4.17.11",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
