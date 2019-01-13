@@ -9,7 +9,6 @@ const bluebirdPromise = require('bluebird');
 const requestPromise = require('request-promise');
 const readFileAsync = bluebirdPromise.promisify(require('fs').readFile);
 
-
 class User {
     private username: string;
     private password: string;
@@ -80,14 +79,14 @@ class Message {
 }
 
 class MessageSender {
-    // url = `https://localhost/health-data-hub/api/v1/messages`;
+    url: string;
+    messageSenderResponses: object = {};
 
-    url = `https://fibonachos.rnd.hdh.nextgenaws.net/health-data-hub/api/v1/messages`;
-    messageSenderResponses = {};
+    constructor(url: string) {
+        this.url = url;
+    }
 
-    // constructor() {}
-
-    async send(messages: Message[], user: User): Promise<any> {
+    async send(messages: Message[], user: User): Promise<object> {
         return bluebirdPromise.mapSeries(messages, async (message: Message) => {
 
 
@@ -143,12 +142,13 @@ bluebirdPromise.try(async () => {
     const adminUser = new User('admin', 'Admin123!');
     const nonAdminUser = new User('sheldon', 'Sheldon123!');
     
-    const messageSender = new MessageSender();
+    const url = `https://fibonachos.rnd.hdh.nextgenaws.net/health-data-hub/api/v1/messages`;
+    const messageSender = new MessageSender(url);
     
     const messages: Message[] = [];
 
-    messages.push(await MessageSender.createMessage(null, 'patient-1-1.hl7', 'LAB5', 'HL7'));
-    messages.push(await MessageSender.createMessage(null, 'patient-1-2.hl7', 'LAB6', 'HL7'));
+    messages.push(MessageSender.createMessage(null, 'patient-1-1.hl7', 'LAB5', 'HL7'));
+    messages.push(MessageSender.createMessage(null, 'patient-1-2.hl7', 'LAB6', 'HL7'));
 
     const data: any = await messageSender.send(messages, adminUser);
 
