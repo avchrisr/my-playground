@@ -16,27 +16,44 @@ Output: [-1,-1]
 */
 
 // SOLUTION
-// two binary searches. one to find the begin, another to find the end.  O(2log n) === O(log n)
+// binary search - O(log n) time | O(1) space
 
 const findPositions = (nums: number[], target: number): number[] => {
     let beginIndex = -1;
     let endIndex = -1;
 
-    findBeginIndex(0, nums.length-1);
+    binarySearch(nums, target, 0, nums.length-1);
 
-    findEndIndex(0, nums.length-1);
+    function binarySearch(nums: number[], target: number, left: number, right: number): void {
+        // if (left <= right)
 
+        // find mid index
+        // if nums[mid] < target,  search right by setting left = mid + 1
+        // if nums[mid] > target,  search left by setting right = mid - 1
+        // if nums[mid] === target, 
+        //    if beginIndex === -1 || beginIndex > mid, set beginIndex to mid, and search left
+        //    if endIndex < mid, set endIndex to mid, and search right
 
-    function findBeginIndex(left: number, right: number): void {
+        if (left <= right) {
+            const mid = Math.floor((left + right) / 2);
 
+            if (nums[mid] === target) {
+                if (beginIndex === -1 || beginIndex > mid) {
+                    beginIndex = mid;
+                    binarySearch(nums, target, left, mid - 1);
+                }
+                if (endIndex < mid) {
+                    endIndex = mid;
+                    binarySearch(nums, target, mid + 1, right);
+                }
+            } else if (nums[mid] > target) {
+                binarySearch(nums, target, left, mid - 1);
+            } else {
+                binarySearch(nums, target, mid + 1, right);
+            }
+        }
     }
-
-    function findEndIndex(left: number, right: number): void {
-
-    }
-
     return [beginIndex, endIndex];
-
 };
 
 const input = [5,7,7,8,8,10];
