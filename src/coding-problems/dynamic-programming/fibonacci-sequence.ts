@@ -1,32 +1,32 @@
-// Fibonacci numbers: each number is the sum of the two preceding ones.  F(n) = F(n-1) + F(n-2)  for  n > 1
-// 1 1 2 3 5 8 13 21 34 55 ...
+// Fibonacci numbers: each number is the sum of the two preceding ones.  F(n) = F(n-1) + F(n-2)  for  n >= 2
+// 0 1 1 2 3 5 8 13 21 34 55 ...
 
 /*
 fibonacci_iterative(45);    //  1134903170
-ITERATIVE:                      3.092ms
+ITERATIVE:                      2.931ms
 
 fibonacci(45);              //  1134903170
-fibonacci function calls =      2269806339
-NORMAL RECURSIVE:               16243.314ms
+fibonacci function calls =      3672623805
+NORMAL RECURSIVE:               65714.404ms
 
 fiboDP(45);                 //  1134903170
-fiboDP function calls =         45
-DYNAMIC PROGRAMMING:            0.160ms
+fiboDP function calls =         46
+DYNAMIC PROGRAMMING:            0.175ms
 */
 
 // Iterative solution  --  O(n) time | O(1) space
 // Not as fast as Dynamic Programming recursive solution, but still much faster than the normal recursive solution.
 const fibonacci_iterative = (sequence: number): number => {
-    // 1 1 2 3 5 8 13 21 34 55 ...
-    if (sequence < 3) {
-        return 1;
+    // 0 1 1 2 3 5 8 13 21 34 55 ...
+    if (sequence < 2) {
+        return sequence;
     }
 
     let currNum: number;
     let prev1 = 1;
-    let prev2 = 1;
+    let prev2 = 0;
 
-    for (let i=3; i <= sequence; i++) {
+    for (let i=2; i <= sequence; i++) {
         currNum = prev1 + prev2;
         prev2 = prev1;
         prev1 = currNum;
@@ -47,8 +47,8 @@ let fiboDPcalls = 0;
 function fibonacci(sequence: number) {
     fibonacciFunctionCalls += 1;
 
-    if (sequence <= 2) {
-        return 1;
+    if (sequence < 2) {
+        return sequence;
     }
     return fibonacci(sequence-1) + fibonacci(sequence-2);
 }
@@ -57,8 +57,8 @@ function fibonacci(sequence: number) {
 const fiboDP = (sequence: number, memo = {}) => {
     fiboDPcalls += 1;
 
-    if (sequence <= 2) {
-        return 1;
+    if (sequence < 2) {
+        return sequence;
     }
 
     // this yields 87 function calls (because two recursive calls) vs. 45 below.
