@@ -1,18 +1,27 @@
 
 /*
  TODO:
- - insert data sources on the fly if not exist
+ - insert data sources on the fly if not exist?
 
  - command-line arguments support
-   -file  (single or multiple files)  each file needs a datasourceidentifier, or the default DSI will be used
-   -dir data  --  all files in the directory if 'file' does not exist. Defaults to currentDir
-   -dsi LAB1  --  defaults to LAB1.  create it on the fly if not exist, with OPT_IN consent. (protected == false)
-   -user admin
-   -pass Admin123!
+   --site      (-s) fibo            (R)
+   --user      (-u) admin           (R)
+   --pass      (-p) adminpass       (R)
+   --dsi LAB1  (--dsi)              (R) defaults to LAB1.  create it on the fly if not exist, with OPT_IN consent. (protected == false)
+   --file      (-f)                     (single or multiple files)  each file needs a datasourceidentifier, or the default DSI will be used
+   --dir data  (-d)                     all files in the directory if 'file' does not exist. Defaults to currentDir
 
+usage examples:
 
- - create data source script.  this is something manual run. no command-line interface as it'd be clumsy.
-   - create-data-source.ts
+- two hl7 files with DSI = LAB1
+node message-sender.js -s fibo -u admin -p adminpass -f test-patient-1.hl7 -f test-patient-2.hl7 --dsi LAB1
+
+- three hl7 files, with LAB2 and LAB3 DSI, with default DSI = LAB1
+node message-sender.js --site fibo --user admin --pass adminpass --dir data --file 'patient-1.hl7' --file 'patient-2.hl7 LAB2' --file 'patient-3.hl7 LAB3' --dsi LAB1
+
+- all files in 'data' directory with DSI = LAB1
+node message-sender.js -s fibo -u admin -p adminpass --dsi LAB1 --dir data
+
 */
 
 const _ = require('lodash');
