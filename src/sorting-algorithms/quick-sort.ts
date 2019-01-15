@@ -24,7 +24,7 @@ function pivot(arr: number[], start = 0, end = arr.length - 1) {
 
     for (let i = start + 1; i < arr.length; i++) {
         if (arr[i] < pivot) {
-            // swap
+            // swap. goal is to place all smaller numbers to the left of Pivot, and larger numbers to the right of Pivot
             swapIndex += 1;
             swap(arr, swapIndex, i);
         }
