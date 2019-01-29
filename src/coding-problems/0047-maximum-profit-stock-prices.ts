@@ -27,7 +27,6 @@ const maximumProfitCalc = (stockPrices: number[]): any => {
     for (let i=1; i < stockPrices.length; i++) {
         if (stockPrices[i] < currBuyPrice) {
             currBuyPrice = stockPrices[i];
-            currSellPrice = -1;
             currProfit = 0;
         } else if (stockPrices[i] > currBuyPrice) {
             currSellPrice = stockPrices[i];
@@ -50,7 +49,8 @@ const maximumProfitCalc = (stockPrices: number[]): any => {
 
 // const stockPrices = [9, 11, 8, 5, 7, 10];       // 5, 10  (5)
 // const stockPrices = [9, 11, 1, 5, 7, 10];       // 1, 10 (9)
-const stockPrices = [9, 21, 1, 5, 7, 10];       // 9, 21 (12)
+// const stockPrices = [9, 21, 1, 5, 7, 10];       // 9, 21 (12)
+const stockPrices = [9, 2, 1, 5, 10, 7];       // 1, 10 (9)
 
 console.log(maximumProfitCalc(stockPrices));
 
