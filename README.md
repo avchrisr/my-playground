@@ -30,7 +30,7 @@ _this text_ is also italic
 
 [my blog 2](https://www.myblog.com "this is my hover over title AKA tooltip")
 
-![my logo](https://www.myblog.com/images/mylogo.png)
+![my logo](https://houndsavers.org/wp-content/uploads/2017/02/home-newsletter-dog-2.png)
 
 `<p>this is a inline code block</p>`
 
@@ -69,7 +69,7 @@ def add(num1, num2):
 | Name      | Email         |
 | --------- | ------------- |
 | John Doe  | john@mail.com |
-| Chris Ro  | cro@gmail.com |
+| Jane Doe  | jane@mail.com |
 
 **Task List**
 
