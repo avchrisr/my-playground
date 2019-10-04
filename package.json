@@ -4,9 +4,9 @@
   "description": "my playground",
   "main": "app.js",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "bluebird": "^3.5.3",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@types/node": "^10.12.18"
